@@ -40,6 +40,8 @@ node_degree_permutations2 = [
     {0: 3, 1: 2, 2: 1, 3: 0},
 ]
 
+print(gi.find_all_graphs_up_to_order(2))
+
 class bq_tests(unittest.TestCase):
     def test001_collect_nodes(self):
         self.assertEqual(
@@ -103,6 +105,26 @@ class bq_tests(unittest.TestCase):
         self.assertEqual(
             node_degree_permutations2,
             gi.create_node_degree_permutations(node_degree2)
+        )
+
+    def test009_powerset(self):
+        self.assertEqual(
+            frozenset([
+                frozenset({}),
+                frozenset({1}),
+                frozenset({0}),
+                frozenset({0, 1}),
+            ]),
+            frozenset(gi.powerset(range(2)))
+        )
+        self.assertEqual(
+            frozenset([
+                frozenset({}),
+                frozenset({(0, 1)}),
+                frozenset({(1, 2)}),
+                frozenset({(0, 1), (1, 2)}),
+            ]),
+            frozenset(gi.powerset(edge_set_graph))
         )
 
 if __name__ == '__main__':

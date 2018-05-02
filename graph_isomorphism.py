@@ -1,4 +1,4 @@
-from itertools import permutations, product
+from itertools import combinations, permutations, product
 from functools import reduce
 from operator import add
 from collections import defaultdict
@@ -44,3 +44,34 @@ def create_node_degree_permutations(node_degree):
     by_degree = [create_permutations(v) for v in node_degree.values()]
     consolidated = [reduce(add_dicts, combo) for combo in product(*by_degree)]
     return consolidated
+
+def powerset(raw_set):
+    """ Generates all possible subsets of a set
+    """
+    order = len(list(raw_set))
+    power_generator = (
+        frozenset(c)
+        for r in range(order + 1)
+        for c in combinations(raw_set, r)
+    )
+    return frozenset(power_generator)
+
+def find_all_graphs_up_to_order(order):
+    """ Generates all edge_sets and groups into isomorphism classes
+    """
+
+    def degree_counts(edge_set):
+        return {k: len(list(v)) for k, v in degree_nodes(edge_set).items()}
+
+    nodes = range(order)
+    possible_edges = frozenset(combinations(nodes, 2))
+    edge_sets = powerset(possible_edges)
+
+    # group edge_sets by identifying topological characteristics
+    analyzed = {edge_set: degree_counts(edge_set) for edge_set in edge_sets}
+
+    grouped_by_degree_counts = defaultdict(set)
+    for k, v in analyzed.items():
+        grouped_by_degree_counts[frozenset(v.items())].add(k)
+
+    return grouped_by_degree_counts ## WIP: intermediate result
