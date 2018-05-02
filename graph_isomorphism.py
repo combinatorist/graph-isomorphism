@@ -74,4 +74,11 @@ def find_all_graphs_up_to_order(order):
     for k, v in analyzed.items():
         grouped_by_degree_counts[frozenset(v.items())].add(k)
 
+    # subgroup edge_sets into isomorphic equivalence classes
+    subgrouped_by_isomorphism = dict()
+    for k, edge_sets in grouped_by_degree_counts.items():
+        new_edge_sets = list(list(edge_sets[0]))
+        for edge_set in edge_sets[1:]:
+            if edge_set
+
     return grouped_by_degree_counts ## WIP: intermediate result
