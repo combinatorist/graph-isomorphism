@@ -6,6 +6,8 @@ edge_set_graph = (
   (1, 2),
 )
 
+nodes = set(range(3))
+
 permutations = [
     {0: 0, 1: 1, 2: 2},
     {0: 0, 1: 2, 2: 1},
@@ -22,14 +24,14 @@ node_degree = {1: [0, 2], 2: [1]}
 class bq_tests(unittest.TestCase):
     def test001_collect_nodes(self):
         self.assertEqual(
-            set(range(3)),
+            nodes,
             gi.collect_nodes(edge_set_graph)
         )
 
     def test002_create_permutations(self):
         self.assertEqual(
             permutations,
-            gi.create_permutations(edge_set_graph)
+            gi.create_permutations(nodes)
         )
 
     def test_003_permute_graph(self):
@@ -56,7 +58,7 @@ class bq_tests(unittest.TestCase):
     def test_006_find_homomorphisms(self):
         self.assertEqual(
             [permutations[0], permutations[-1]],
-            gi.find_homomorphisms(edge_set_graph)
+            gi.find_homomorphisms(edge_set_graph, permutations)
         )
 
     def test_007_degree_nodes(self):
