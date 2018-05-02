@@ -4,7 +4,7 @@ from operator import add
 from collections import defaultdict
 
 def collect_nodes(edge_set):
-  return set(reduce(add, edge_set))
+    return set(reduce(add, edge_set))
 
 def create_permutations(nodes):
     return [dict(zip(nodes, reorder)) for reorder in permutations(nodes)]
@@ -15,15 +15,15 @@ def permute_graph(edge_set, permutation):
 def cannonize_graph(edge_set):
     return tuple(sorted(set(tuple(sorted(pair)) for pair in edge_set)))
 
-def is_same_graph(g, h):
+def is_same_graph(left, right):
     # assumes both graphs have same node names
-    return cannonize_graph(g) == cannonize_graph(h)
+    return cannonize_graph(left) == cannonize_graph(right)
 
 def is_isomorphism(permutation, edge_set):
     return is_same_graph(edge_set, permute_graph(edge_set, permutation))
 
-def find_homomorphisms(edge_set, permutations):
-    return [perm for perm in permutations if is_isomorphism(perm, edge_set)]
+def find_homomorphisms(edge_set, node_permutations):
+    return [p for p in node_permutations if is_isomorphism(p, edge_set)]
 
 def degree_nodes(edge_set):
     incidents = [node for pair in edge_set for node in pair]
@@ -35,13 +35,12 @@ def degree_nodes(edge_set):
         by_count[count].append(node)
     return by_count
 
-def add_dicts(a, b):
-    return dict(list(a.items()) + list(b.items()))
+def add_dicts(left, right):
+    return dict(list(left.items()) + list(right.items()))
 
 def create_node_degree_permutations(node_degree):
     """ Finds permutations preserving node_degree (no trivial heteromorphisms)
     """
     by_degree = [create_permutations(v) for v in node_degree.values()]
-    combined_permutations = product(*by_degree)
-    consolidated = [reduce(add_dicts, combo) for combo in combined_permutations]
+    consolidated = [reduce(add_dicts, combo) for combo in product(*by_degree)]
     return consolidated
