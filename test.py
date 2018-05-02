@@ -17,6 +17,8 @@ permutations = [
 
 redundant_graph = [a for a in reversed(edge_set_graph)] + list(edge_set_graph)
 
+node_degree = {1: [0, 2], 2: [1]}
+
 class bq_tests(unittest.TestCase):
     def test001_collect_nodes(self):
         self.assertEqual(
@@ -55,6 +57,18 @@ class bq_tests(unittest.TestCase):
         self.assertEqual(
             [permutations[0], permutations[-1]],
             gi.find_homomorphisms(edge_set_graph)
+        )
+
+    def test_007_degree_nodes(self):
+        self.assertEqual(
+            node_degree,
+            gi.degree_nodes(edge_set_graph)
+        )
+
+    def test_008_create_node_degree_permutations(self):
+        self.assertEqual(
+            permutations[:1] + permutations[-1:],
+            gi.create_node_degree_permutations(node_degree)
         )
 
 if __name__ == '__main__':
