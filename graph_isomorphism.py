@@ -19,8 +19,12 @@ def is_same_graph(left, right):
     # assumes both graphs have same node names
     return cannonize_graph(left) == cannonize_graph(right)
 
-def is_isomorphism(permutation, edge_set):
-    return is_same_graph(edge_set, permute_graph(edge_set, permutation))
+def is_isomorphism(permutation, left, right=None):
+    """ Does the permutation on the right graph equal the left one?
+    """
+    if not right:
+        right = left
+    return is_same_graph(permute_graph(left, permutation), right)
 
 def find_homomorphisms(edge_set, node_permutations):
     return [p for p in node_permutations if is_isomorphism(p, edge_set)]
