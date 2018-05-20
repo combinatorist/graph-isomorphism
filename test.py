@@ -1,11 +1,17 @@
 import unittest
 import graph_isomorphism as gi
+from graph_isomorphism import Graph
 
 ######## Simplest Example ########
-edge_set_graph = (
+edge_set_graph = Graph([
     (0, 1),
     (1, 2),
-)
+])
+
+edge_set_graph_relabeled = Graph([
+    ('a', 'b'),
+    ('b', 'c'),
+])
 
 nodes = set(range(3))
 
@@ -20,16 +26,16 @@ permutations = [
 
 homomorphisms = [permutations[0], permutations[-1]]
 
-redundant_graph = [a for a in reversed(edge_set_graph)] + list(edge_set_graph)
+redundant_graph = Graph([a for a in reversed(edge_set_graph)] + list(edge_set_graph))
 
 node_degree = {1: [0, 2], 2: [1]}
 
 ######## Second Example ########
-edge_set_graph2 = (
+edge_set_graph2 = Graph([
     (0, 1),
     (1, 2),
     (2, 3),
-)
+])
 
 node_degree2 = {1: [0, 3], 2: [1, 2]}
 
@@ -47,7 +53,7 @@ class bq_tests(unittest.TestCase):
     def test001_collect_nodes(self):
         self.assertEqual(
             nodes,
-            gi.collect_nodes(edge_set_graph)
+            edge_set_graph.nodes()
         )
 
     def test002_create_permutations(self):
@@ -58,23 +64,23 @@ class bq_tests(unittest.TestCase):
 
     def test003_permute_graph(self):
         self.assertEqual(
-            [(2, 1), (1, 0)],
-            gi.permute_graph(edge_set_graph, permutations[-1])
+            ((0, 1), (1, 2)),
+            edge_set_graph.permute(permutations[-1])
         )
 
     def test004_cannonize_graph(self):
         self.assertEqual(
             edge_set_graph,
-            gi.cannonize_graph(redundant_graph)
+            Graph(redundant_graph)
         )
 
     def test005_is_same_graph(self):
         # redundant on test004_cannonize_graph
         self.assertTrue(
-            gi.is_same_graph(edge_set_graph, redundant_graph)
+            edge_set_graph == redundant_graph
         )
         self.assertFalse(
-            gi.is_same_graph(edge_set_graph, edge_set_graph[:-1])
+            edge_set_graph == edge_set_graph[:-1]
         )
 
     def test006_find_homomorphisms(self):
@@ -90,22 +96,22 @@ class bq_tests(unittest.TestCase):
     def test007_degree_nodes(self):
         self.assertEqual(
             node_degree,
-            gi.degree_nodes(edge_set_graph)
+            edge_set_graph.degree_nodes()
         )
         self.assertEqual(
             node_degree2,
-            gi.degree_nodes(edge_set_graph2)
+            edge_set_graph2.degree_nodes()
         )
 
-    def test008_create_node_degree_permutations(self):
+    def test008_node_degree_permutations(self):
         self.assertEqual(
             homomorphisms,
-            gi.create_node_degree_permutations(node_degree)
+            edge_set_graph.node_degree_permutations()
         )
 
         self.assertEqual(
             node_degree_permutations2,
-            gi.create_node_degree_permutations(node_degree2)
+            edge_set_graph2.node_degree_permutations()
         )
 
     def test009_powerset(self):
