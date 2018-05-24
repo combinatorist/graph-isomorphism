@@ -139,3 +139,10 @@ def group_all_graphs_up_to_order(order):
 def extract_graphs_from_grouping(grouping):
     """Only used to get distinct graphs from previous function"""
     return [group[0] for node_degrees in grouping.values() for group in node_degrees]
+
+if __name__ == "__main__":
+    from sys import argv
+    from pprint import pprint
+    grouped_graphs = group_all_graphs_up_to_order(int(argv[1]))
+    distinct_graphs = extract_graphs_from_grouping(grouped_graphs)
+    pprint(distinct_graphs)
