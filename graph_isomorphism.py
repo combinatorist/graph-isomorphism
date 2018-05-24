@@ -101,7 +101,7 @@ def powerset(raw_set):
     return frozenset(power_generator)
 
 
-def find_all_graphs_up_to_order(order):
+def group_all_graphs_up_to_order(order):
     """ Generates all edge_sets and groups them into isomorphism classes
     """
 
@@ -136,3 +136,6 @@ def find_all_graphs_up_to_order(order):
 
     return {k: subgroup_by_isomorphism(v) for k, v in grouped_by_degree_counts.items()}
 
+def extract_graphs_from_grouping(grouping):
+    """Only used to get distinct graphs from previous function"""
+    return [group[0] for node_degrees in grouping.values() for group in node_degrees]

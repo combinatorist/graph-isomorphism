@@ -46,9 +46,6 @@ node_degree_permutations2 = [
     {0: 3, 1: 2, 2: 1, 3: 0},
 ]
 
-from pprint import pprint
-pprint(gi.find_all_graphs_up_to_order(4))
-
 class bq_tests(unittest.TestCase):
     def test001_collect_nodes(self):
         self.assertEqual(
@@ -133,6 +130,12 @@ class bq_tests(unittest.TestCase):
             ]),
             frozenset(gi.powerset(edge_set_graph))
         )
+
+    def test010_group_all_graphs_up_to_order(self):
+	self.assertEqual(
+	    34,
+	    len(gi.extract_graphs_from_grouping(gi.group_all_graphs_up_to_order(5)))
+	)
 
 if __name__ == '__main__':
         unittest.main()
