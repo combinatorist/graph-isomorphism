@@ -140,9 +140,22 @@ def extract_graphs_from_grouping(grouping):
     """Only used to get distinct graphs from previous function"""
     return [group[0] for node_degrees in grouping.values() for group in node_degrees]
 
+def group_by_node_count(grouped, distinct=True):
+    def node_count(node_degrees):
+	return sum(count for degree, count in node_degrees)
+
+    grouping_by_node_count = defaultdict(dict)
+    for node_degrees, equivalence_classes in grouped.items():
+	if distinct:
+	    graphs = [[graphs[0]] for graphs in equivalence_classes]
+	else:
+	    graphs = equivalence_classes
+	grouping_by_node_count[node_count(node_degrees)][node_degrees] = graphs
+    return dict(grouping_by_node_count)
+
 if __name__ == "__main__":
     from sys import argv
     from pprint import pprint
     grouped_graphs = group_all_graphs_up_to_order(int(argv[1]))
-    distinct_graphs = extract_graphs_from_grouping(grouped_graphs)
+    distinct_graphs = group_by_node_count(grouped_graphs)
     pprint(distinct_graphs)
